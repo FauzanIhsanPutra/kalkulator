@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Bunga dan Anuitas</title>
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <nav>
+        <button onclick="showCalculator('simpleInterest')">Bunga Sederhana</button>
+        <button onclick="showCalculator('compoundInterest')">Bunga Majemuk</button>
+        <button onclick="showCalculator('annuity')">Anuitas</button>
+    </nav>
+
+    <div id="calculators">
+        <!-- Kalkulator Bunga Sederhana -->
+        <div id="simpleInterest" class="calculator">
+            <h2>Kalkulator Bunga Sederhana</h2>
+            <input type="number" id="principal" placeholder="Prinsipal (Rp)">
+            <input type="number" id="rate" placeholder="Suku Bunga (%)">
+            <input type="number" id="time" placeholder="Waktu (tahun)">
+            <button onclick="calculateSimpleInterest()">Hitung Bunga Sederhana</button>
+            <p id="simpleInterestResult"></p>
+        </div>
+
+        <!-- Kalkulator Bunga Majemuk -->
+        <div id="compoundInterest" class="calculator" style="display: none;">
+            <h2>Kalkulator Bunga Majemuk</h2>
+            <input type="number" id="principalComp" placeholder="Prinsipal (Rp)">
+            <input type="number" id="rateComp" placeholder="Suku Bunga (%)">
+            <input type="number" id="timeComp" placeholder="Waktu (tahun)">
+            <input type="number" id="frequency" placeholder="Frekuensi Kompon (kali per tahun)">
+            <button onclick="calculateCompoundInterest()">Hitung Bunga Majemuk</button>
+            <p id="compoundInterestResult"></p>
+        </div>
+
+        <!-- Kalkulator Anuitas -->
+        <div id="annuity" class="calculator" style="display: none;">
+            <h2>Kalkulator Anuitas</h2>
+            <input type="number" id="payment" placeholder="Pembayaran Tahunan (Rp)">
+            <input type="number" id="rateAnnuity" placeholder="Suku Bunga (%)">
+            <input type="number" id="yearsAnnuity" placeholder="Jangka Waktu (tahun)">
+            <button onclick="calculateAnnuity()">Hitung Nilai Anuitas</button>
+            <p id="annuityResult"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+<script>
+    function showCalculator(id) {
+    const calculators = document.querySelectorAll('.calculator');
+    calculators.forEach(calculator => {
+        calculator.style.display = 'none';
+    });
+    document.getElementById(id).style.display = 'block';
+}
+
+// Kalkulator Bunga Sederhana
+function calculateSimpleInterest() {
+    const principal = parseFloat(document.getElementById("principal").value);
+    const rate = parseFloat(document.getElementById("rate").value);
+    const time = parseFloat(document.getElementById("time").value);
+    const interest = (principal * rate * time) / 100;
+    document.getElementById("simpleInterestResult").textContent = `Bunga Sederhana: Rp ${interest.toFixed(2)}`;
+}
+
+// Kalkulator Bunga Majemuk
+function calculateCompoundInterest() {
+    const principal = parseFloat(document.getElementById("principalComp").value);
+    const rate = parseFloat(document.getElementById("rateComp").value) / 100;
+    const time = parseFloat(document.getElementById("timeComp").value);
+    const frequency = parseInt(document.getElementById("frequency").value);
+    const amount = principal * Math.pow((1 + rate / frequency), frequency * time);
+    document.getElementById("compoundInterestResult").textContent = `Bunga Majemuk: Rp ${(amount - principal).toFixed(2)}`;
+}
+
+// Kalkulator Anuitas
+function calculateAnnuity() {
+    const payment = parseFloat(document.getElementById("payment").value);
+    const rate = parseFloat(document.getElementById("rateAnnuity").value) / 100;
+    const years = parseInt(document.getElementById("yearsAnnuity").value);
+    const annuity = payment * ((1 - Math.pow(1 + rate, -years)) / rate);
+    document.getElementById("annuityResult").textContent = `Nilai Anuitas: Rp ${annuity.toFixed(2)}`;
+}
+
+</script>
+</html>
